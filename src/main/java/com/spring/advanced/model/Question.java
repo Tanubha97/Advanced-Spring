@@ -10,6 +10,8 @@ public class Question {
     private String correctAnswer;
     private List<String> options;
 
+    public Question() { }
+
     public Question(String id, String description, String correctAnswer, List<String> options) {
         this.id = id;
         this.description = description;

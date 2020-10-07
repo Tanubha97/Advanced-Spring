@@ -25,7 +25,8 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = Application.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SurveyControllerITest extends Object {
-
+    public SurveyControllerITest() {
+    }
 
     @LocalServerPort  //Initialize and launch spring boot application
     private int port;
@@ -92,7 +93,7 @@ public class SurveyControllerITest extends Object {
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
 
         ResponseEntity<List<Question>> response = restTemplate.exchange(url,
-                HttpMethod.GET, new HttpEntity<String>("DUMMY_DOESNT_MATTER",
+                HttpMethod.GET, new HttpEntity<String>(null,
                         headers),
                 new ParameterizedTypeReference<List<Question>>() {
                 });
