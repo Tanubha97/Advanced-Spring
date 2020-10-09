@@ -2,6 +2,8 @@ package com.spring.advanced.controller;
 
 import com.spring.advanced.model.Question;
 import com.spring.advanced.service.SurveyService;
+import net.minidev.json.JSONValue;
+import org.json.JSONArray;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -20,7 +22,9 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -63,9 +67,8 @@ public class SurveyControllerTest {
     public void retrieveSurveyQuestions() throws Exception {
         List<Question> mockList = Arrays.asList(
                 new Question("Question1", "First Alphabet", "A", Arrays.asList(
-                        "A", "B", "C", "D")),
-                new Question("Question2", "Last Alphabet", "Z", Arrays.asList(
-                        "A", "X", "Y", "Z")));
+                        "A", "B", "C", "D")));
+               // new Question("Question2", "Last Alphabet", "Z", Arrays.asList("A", "X", "Y", "Z")));
 
         when(surveyService.retrieveQuestions(anyString())).thenReturn(mockList);
 
@@ -84,18 +87,43 @@ public class SurveyControllerTest {
                 "}"
                 + "]";
 
-        String expected = "["+ "{\"id\":\"Question1\",\"description\":\"" +
-                            "First Alphabet\",\"correctAnswer\":\"A\"},"
-                                + "{\"id\":\"Question1\",\"description\":\"" +
-                                     "Second Alphabet\",\"correctAnswer\":\"B\"},"+ "]";
-        */
+
+
 
         String expected = "["
                 + "{\"id\":\"Question1\",\"description\":\"First Alphabet\",\"correctAnswer\":\"A\"," +
-                "\"options\":\"[\"A\",\"B\",\"C\",\"D\"]\"},"
-                +  "{\"id\":\"Question2\",\"description\":\"Second Alphabet\",\"correctAnswer\":\"B\"," +
-                "\"options\":\"[\"A\",\"B\",\"C\",\"D\"]\"}"
+                "\"options\":[\"A\",\"B\",\"C\",\"D\"]},"
+                +  "{\"id\":\"Question2\",\"description\":\"Last Alphabet\",\"correctAnswer\":\"Z\"," +
+                "\"options\":[\"A\",\"X\",\"Y\",\"Z\"]}"
                 + "]";
+                */
+        Map obj=new HashMap();
+        obj.put("id", "Question1");
+        obj.put("description", "First Alphabet");
+        obj.put("correctAnswer", "A");
+        JSONArray arr = new JSONArray();
+        arr.put("A");
+        arr.put("B");
+        arr.put("C");
+        arr.put("D");
+        obj.put("options", arr);
+
+        JSONArray newArr = new JSONArray();
+        newArr.put(obj);
+        String expected = JSONValue.toJSONString(newArr);
+
+    /* {
+        "id": "Question1",
+        "description": "Largest Country in the World",
+        "correctAnswer": "Russia",
+        "options": [
+            "India",
+            "Russia",
+            "United States",
+            "China"
+        ]
+    }*/
+
 
 
         JSONAssert.assertEquals(expected, result.getResponse()
