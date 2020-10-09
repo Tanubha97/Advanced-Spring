@@ -83,9 +83,19 @@ public class SurveyControllerTest {
                 "\\\",\\\"correctAnswer\\\":\\\"Z\\\",\\\"options\\\":\\\"[A,X,Y,Z]\\\"" +
                 "}"
                 + "]";
+
+        String expected = "["+ "{\"id\":\"Question1\",\"description\":\"" +
+                            "First Alphabet\",\"correctAnswer\":\"A\"},"
+                                + "{\"id\":\"Question1\",\"description\":\"" +
+                                     "Second Alphabet\",\"correctAnswer\":\"B\"},"+ "]";
         */
-        String expected = "{\"id\":\"Question1\",\"description\":\"" +
-                        "First Alphabet\",\"correctAnswer\":\"A\"}";
+
+        String expected = "["
+                + "{\"id\":\"Question1\",\"description\":\"First Alphabet\",\"correctAnswer\":\"A\"," +
+                "\"options\":\"[\"A\",\"B\",\"C\",\"D\"]\"},"
+                +  "{\"id\":\"Question2\",\"description\":\"Second Alphabet\",\"correctAnswer\":\"B\"," +
+                "\"options\":\"[\"A\",\"B\",\"C\",\"D\"]\"}"
+                + "]";
 
 
         JSONAssert.assertEquals(expected, result.getResponse()
