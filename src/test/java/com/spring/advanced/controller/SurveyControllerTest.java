@@ -110,7 +110,6 @@ public class SurveyControllerTest {
 
         JSONArray newArr = new JSONArray();
         newArr.put(obj);
-        String expected = JSONValue.toJSONString(newArr);
 
     /* {
         "id": "Question1",
@@ -123,10 +122,7 @@ public class SurveyControllerTest {
             "China"
         ]
     }*/
-
-
-
-        JSONAssert.assertEquals(expected, result.getResponse()
+        JSONAssert.assertEquals(String.valueOf(newArr), result.getResponse()
                 .getContentAsString(), false);
     }
 
