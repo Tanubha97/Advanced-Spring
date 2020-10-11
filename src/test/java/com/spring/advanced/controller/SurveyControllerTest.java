@@ -1,5 +1,6 @@
 package com.spring.advanced.controller;
 
+import com.google.gson.Gson;
 import com.spring.advanced.model.Question;
 import com.spring.advanced.service.SurveyService;
 import net.minidev.json.JSONValue;
@@ -21,10 +22,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -79,51 +77,22 @@ public class SurveyControllerTest {
                                 MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
 
-       /* String expected = "["
-                + "{\\\"id\\\":\\\"Question1\\\",\\\"description\\\":\\\"First Alphabet\\\",\" +\n" +
-                "                \"\\\"correctAnswer\\\":\\\"A\\\",\\\"options\\\":\\\"[A,X,Y,Z]\\\"},"
-                + "{\\\"id\\\":\\\"Question2\\\",\\\"description\\\":\\\"Last Alphabet" +
-                "\\\",\\\"correctAnswer\\\":\\\"Z\\\",\\\"options\\\":\\\"[A,X,Y,Z]\\\"" +
-                "}"
-                + "]";
-
-
-
-
-        String expected = "["
-                + "{\"id\":\"Question1\",\"description\":\"First Alphabet\",\"correctAnswer\":\"A\"," +
-                "\"options\":[\"A\",\"B\",\"C\",\"D\"]},"
-                +  "{\"id\":\"Question2\",\"description\":\"Last Alphabet\",\"correctAnswer\":\"Z\"," +
-                "\"options\":[\"A\",\"X\",\"Y\",\"Z\"]}"
-                + "]";
-                */
-        Map obj=new HashMap();
-        obj.put("id", "Question1");
-        obj.put("description", "First Alphabet");
-        obj.put("correctAnswer", "A");
-        JSONArray arr = new JSONArray();
-        arr.put("A");
-        arr.put("B");
-        arr.put("C");
-        arr.put("D");
-        obj.put("options", arr);
-
-        JSONArray newArr = new JSONArray();
-        newArr.put(obj);
-
-    /* {
-        "id": "Question1",
-        "description": "Largest Country in the World",
-        "correctAnswer": "Russia",
-        "options": [
-            "India",
-            "Russia",
-            "United States",
-            "China"
-        ]
-    }*/
-        JSONAssert.assertEquals(String.valueOf(newArr), result.getResponse()
+        Question question = new Question();
+        question.setId("Question1");
+        question.setDescription("First Alphabet");
+        question.setCorrectAnswer("A");
+        List<String> option = new ArrayList<>();
+        option.add("A");
+        option.add("B");
+        option.add("C");
+        option.add("D");
+        question.setOptions(option);
+        Gson gson = new Gson();
+        JSONAssert.assertEquals(gson.toJson(Collections.singletonList(question), List.class), result.getResponse()
                 .getContentAsString(), false);
+
+        List<Question> questions = new ArrayList<>();
+        questions.add(question);
     }
 
     @Test
@@ -131,7 +100,8 @@ public class SurveyControllerTest {
         Question mockQuestion = new Question("1", "Smallest Number", "1",
                 Arrays.asList("1", "2", "3", "4"));
 
-        String questionJson = "{\"description\":\"Smallest Number\",\"correctAnswer\":\"1\",\"options\":[\"1\",\"2\",\"3\",\"4\"]}";
+        String questionJson = "{\"description\":\"Smallest Number\",\"correctAnswer\":\"1\",\"options\"" +
+                ":[\"1\",\"2\",\"3\",\"4\"]}";
         //surveyService.addQuestion to respond back with mockQuestion
         Mockito.when(
                 surveyService.addQuestion(Mockito.anyString(), Mockito
