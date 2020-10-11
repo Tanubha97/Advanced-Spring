@@ -3,8 +3,6 @@ package com.spring.advanced.controller;
 import com.google.gson.Gson;
 import com.spring.advanced.model.Question;
 import com.spring.advanced.service.SurveyService;
-import net.minidev.json.JSONValue;
-import org.json.JSONArray;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -30,7 +28,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(value = SurveyController.class)
+@WebMvcTest(value = SurveyController.class, useDefaultFilters = false)
 public class SurveyControllerTest {
     @Autowired
     private MockMvc mockMvc;
